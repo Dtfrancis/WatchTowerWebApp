@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Advertisement>
+	<Ad>
+		<ImageUrl>~/Assets/Amaze3.jpg</ImageUrl>
+		<Height>60</Height>
+		<Width>190</Width>
+	</Ad>
+	<Ad>
+		<ImageUrl>~Assets/apple2.jfif</ImageUrl>
+	</Ad>
+	<Ad>
+		<ImageUrl>~Assets/Samsung2.jfif</ImageUrl>
+	</Ad>
+</Advertisement>
