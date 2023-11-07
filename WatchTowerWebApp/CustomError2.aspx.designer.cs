@@ -11,7 +11,7 @@ namespace WatchTowerWebApp
 {
 
 
-    public partial class HomePage
+    public partial class CustomError2
     {
     }
 }

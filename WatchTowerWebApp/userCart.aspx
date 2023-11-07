@@ -1,6 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="WatchTowerWebApp.WebForm1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserSite.Master" AutoEventWireup="true" CodeBehind="userCart.aspx.cs" Inherits="WatchTowerWebApp.cartUser" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
     <div class="container-fluid">    
     <div class="row">
         <div class="jumbotron bg-primary" >

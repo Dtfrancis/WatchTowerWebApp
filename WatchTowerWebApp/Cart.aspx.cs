@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace WatchTowerWebApp
 {
@@ -11,27 +14,21 @@ namespace WatchTowerWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            bindList();
-            //Gridview1.DataSource = Cart.cartList;
-            //Cart.loadCart()
-            //string total = string.Empty;
-            //Application["grandTotal"] = total;
+            Cart.amazeQuantity = (int)Application["amaze"];
+            Cart.appleQuantity = (int)Application["apple"];
+            Cart.samsungQuantity = (int)Application["samsung"];
 
-            //TextBox1.Text = total;
-            //Label1.Text = (String)Session["p1"];
-            //Label2.Text = (string)Session["cart"];
-            /*
-            
-            Label3.Text = (string)Session["p1quan"];
+            amaze.Text = Cart.amazeQuantity.ToString();
+            apple.Text = Cart.appleQuantity.ToString();
+            samsung.Text = Cart.samsungQuantity.ToString();
 
-            Label4.Text = (string)Session["p2name"];
-            Label5.Text = (string)Session["p2price"];
-            Label6.Text = (string)Session["p2quan"];
 
-            Label7.Text = (string)Session["p3name"];
-            Label8.Text = (string)Session["p3price"];
-            Label9.Text = (string)Session["p3quan"];
-            */
+            Cart.calAmazeSubtotal(70);
+            Cart.calAppleSubtotal(800);
+            Cart.calSamaungSubtotal(350);
+
+            calGrandtotal();
+
 
         }
 
@@ -43,50 +40,97 @@ namespace WatchTowerWebApp
 
         protected void deleteAll_Click(object sender, EventArgs e)
         {
-            if (Cart.cartList.Count == 0)
-            {
-                Response.Redirect("CustomError1.aspx");
-            }
-            else
-            {
-                Session["p1"] = "";
-                Session["p1name"] = "";
-                Session["p2name"] = "";
-                Session["p3name"] = "";
-                Session["p1price"] = "";
-                Session["p2price"] = "";
-                Session["p3price"] = "";
-                Application["quantity1"] = 0;
-                Application["quantity2"] = 0;
-                Application["quantity3"] = 0;
+            
+            Application["amaze"] = 0;
+            Application["apple"] = 0;
+            Application["samsung"] = 0;
 
-                Cart.reset();
+            Cart.samsungsubtotal = 0;
+            Cart.amazesubtotal = 0;
+            Cart.applesubtotal = 0;
 
-                Server.Transfer("Products.aspx");
-            }
+            Server.Transfer("Products.aspx");
+            
         }
 
         protected void toCheckout_Click(object sender, EventArgs e)
         {
-            if (Cart.total == 0)
-            {
-                Response.Redirect("CustomError1.aspx");
-            }
-            else
-            {
-                Label13.Text = "Your grand total is " + Session["grandTotal"];
-                //Cart.reset();
-            }
+            Label8.Text = Cart.calGrandtotal();
         }
 
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+
+
+
+            protected void calGrandtotal()
         {
+            Label8.Text = Cart.calGrandtotal();
+            Label7.Text = Cart.displayCart();
             
         }
-       protected void bindList()
+
+       
+
+      
+
+       
+
+        protected void Button3_Click(object sender, EventArgs e)
         {
-            GridView1.DataSource = Cart.cartList;
-            GridView1.DataBind();
+            Application["apple"] = 0;
+            Cart.grandtotal = Cart.grandtotal - 800 * Cart.appleQuantity;
+            string cs = "Data Source=DESKTOP-1RV8FU9\\SQLEXPRESS;Initial Catalog=WatchTower;Integrated Security=True";
+            SqlConnection con = new SqlConnection(cs);
+            con.Open();
+            string sql = "update cart set appleSubtotal = '" + Application["apple"] + "', appleQuantity= '" + Application["apple"] + "', grandtotal = '" + Cart.grandtotal + "' where userId='" + Application["userId"] + "'";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                da.Fill(dt);
+            }
+            catch (Exception q)
+            {
+                Server.Transfer("CustomError1.aspx");
+            }
+            con.Close();
+            //Cart.applesubtotal = 0;
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Application["amaze"] = 0;
+            Cart.grandtotal = Cart.grandtotal - 70 * Cart.amazeQuantity;
+            string cs = "Data Source=DESKTOP-1RV8FU9\\SQLEXPRESS;Initial Catalog=WatchTower;Integrated Security=True";
+            SqlConnection con = new SqlConnection(cs);
+            con.Open();
+            string sql = "update cart set amazeSubtotal = '" + Application["amaze"] + "', amazeQuantity= '" + Application["amaze"] + "', grandtotal = '" + Cart.grandtotal + "' where userId='" + Application["userId"] + "'";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                da.Fill(dt);
+            }
+            catch (Exception q)
+            {
+                Server.Transfer("CustomError1.aspx");
+            }
+            con.Close();
+            //Cart.applesubtotal = 0;
+
+
+
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            Application["samsung"] = 0;
+            Cart.grandtotal = Cart.grandtotal - 350 * Cart.samsungQuantity;
+            //Cart.samsungsubtotal = 0;
+
+
         }
     }
 }
